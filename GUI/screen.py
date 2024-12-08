@@ -10,7 +10,7 @@ class SudokuSolver:
         
         self.grid = [[0]*9 for _ in range(9)] 
         
-        self.title_label = tk.Label(self.root, text="Sudoku Solver", font=("Helvetica", 30, "bold","italic"), bg="#F4B8D7", fg="#FF3366")
+        self.title_label = tk.Label(self.root, text="Sudoku Solver", font=("Water Brush", 30, "bold","italic"), bg="#F4B8D7", fg="black")
         self.title_label.pack(pady=20)
         
         self.grid_frame = tk.Frame(self.root, bg="#000000", bd=3, relief="solid")  # Bold outer border
