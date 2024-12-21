@@ -7,7 +7,7 @@ class SudokuSolver:
         self.root = root
         self.root.title("Sudoku Solver")
         self.root.geometry("500x600")
-        self.root.config(bg="#F4B8D7")
+        self.root.config(bg="#fac8e2")
 
         self.grid = [[0] * 9 for _ in range(9)]
 
@@ -15,7 +15,7 @@ class SudokuSolver:
             self.root,
             text="Sudoku Solver",
             font=("Water Brush", 45, "bold", "italic"),
-            bg="#F4B8D7",
+            bg="#fac8e2",
             fg="black",
         )
         self.title_label.pack(pady=20)
@@ -39,7 +39,7 @@ class SudokuSolver:
                     font=("Mali", 18),
                     justify="center",
                     bd=0,
-                    bg="#F9E4E5",
+                    bg="#fcfcf7",
                     fg="black",
                     validate="key",
                     validatecommand=validate_command,
@@ -51,7 +51,7 @@ class SudokuSolver:
         self.current_state_index = -1
         self.movie_running = False
 
-        self.button_frame = tk.Frame(self.root, bg="#F4B8D7")
+        self.button_frame = tk.Frame(self.root, bg="#fac8e2")
         self.button_frame.pack(pady=20)
 
         self.solve_button = tk.Button(
@@ -102,7 +102,7 @@ class SudokuSolver:
         )
         self.movie_button.grid(row=1, column=1, padx=10)
 
-        self.slide_frame = tk.Frame(self.root, bg="#F4B8D7")
+        self.slide_frame = tk.Frame(self.root, bg="#fac8e2")
         self.slide_frame.pack(pady=10)
 
         self.prev_button = tk.Button(
