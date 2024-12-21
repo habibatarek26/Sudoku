@@ -14,7 +14,7 @@ class SudokuSolver:
         self.title_label = tk.Label(
             self.root,
             text="Sudoku Solver",
-            font=("Water Brush", 30, "bold", "italic"),
+            font=("Water Brush", 45, "bold", "italic"),
             bg="#F4B8D7",
             fg="black",
         )
@@ -187,6 +187,9 @@ class SudokuSolver:
             self.movie_running = False
             self.current_state_index = 0
 
+    def show_final_result(self):
+        if self.states:
+            self.update_grid_from_state(self.states[-1])
 
     def read_grid(self):
         return [[int(self.entries[row][col].get()) if self.entries[row][col].get().isdigit() else 0 for col in range(9)] for row in range(9)]
@@ -197,10 +200,6 @@ class SudokuSolver:
                 self.entries[row][col].delete(0, tk.END)
                 self.entries[row][col].insert(0, state[row * 9 + col])
 
-    def show_final_result(self):
-        if self.states:
-            self.update_grid_from_state(self.states[-1])
-            
     def clear(self):
         for row in range(9):
             for col in range(9):
