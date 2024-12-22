@@ -19,7 +19,7 @@ class Level(tk.Frame):
         self.sudoku_button_easy = tk.Button(
             self, 
             text="Easy",
-            command=lambda: self.play_user_mode("Easy"),  # Pass the level as an argument
+            command=lambda: self.play_user_mode("Easy"),  
             font=("Mali", 18, "italic"),
             bg="#D99FB4",
             fg="white",
@@ -32,7 +32,7 @@ class Level(tk.Frame):
         self.sudoku_button_medium = tk.Button(
             self,  
             text="Medium",
-            command=lambda: self.play_user_mode("Medium"),  # Pass the level as an argument
+            command=lambda: self.play_user_mode("Medium"), 
             font=("Mali", 18, "italic"),
             bg="#D99FB4",
             fg="white",
@@ -45,7 +45,7 @@ class Level(tk.Frame):
         self.sudoku_button_hard = tk.Button(
             self, 
             text="Hard",
-            command=lambda: self.play_user_mode("Hard"),  # Pass the level as an argument
+            command=lambda: self.play_user_mode("Hard"),  
             font=("Mali", 18, "italic"),
             bg="#D99FB4",
             fg="white",
@@ -67,8 +67,7 @@ class Level(tk.Frame):
         self.back_button.pack(pady=20)
 
     def play_user_mode(self, level):
-        """Pass the selected level to the next screen."""
-        print(f"Selected level: {level}")  # Debugging line to ensure the level is passed correctly
-        self.parent.show_frame("PlayerMode", level)  # Pass level to PlayerMode
+        self.parent.show_frame("PlayerMode", level)  
+        
     def go_back_to_menu(self):
         self.parent.show_frame("GameModeSelection")

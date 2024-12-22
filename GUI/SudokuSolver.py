@@ -178,6 +178,7 @@ class SudokuSolver(tk.Frame):
 
 
     def go_back_to_menu(self):
+        self.clear2()  
         self.parent.show_frame("GameModeSelection")
 
 
@@ -242,4 +243,11 @@ class SudokuSolver(tk.Frame):
         self.movie_running = False
 
     
+    def clear2(self):
+        for row in range(9):
+            for col in range(9):
+                self.entries[row][col].config(state="normal")
+                self.entries[row][col].delete(0, tk.END)
+        self.grid = [[0] * 9 for _ in range(9)]
+        self.states = []
 

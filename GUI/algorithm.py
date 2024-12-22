@@ -220,32 +220,3 @@ class CSP:
         return True
 
 
-
-# Initial board setup
-initial_board = [
-    [0, 0, 0, 0, 3, 0, 4, 0, 0],
-    [0, 0, 0, 0, 4, 0, 0, 2, 0],
-    [8, 6, 0, 7, 0, 0, 0, 0, 0],
-    [0, 4, 0, 0, 8, 0, 7, 0, 0],
-    [0, 1, 0, 0, 2, 5, 0, 0, 3],
-    [0, 0, 2, 1, 0, 0, 9, 0, 0],
-    [9, 7, 0, 8, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 5, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 6, 0, 0]
-]
-
-variables = [f"V{row}{col}" for row in range(1, 10) for col in range(1, 10)]
-
-initial_assignment = {}
-for row in range(1, 10):
-    for col in range(1, 10):
-        var = f"V{row}{col}"
-        value = initial_board[row - 1][col - 1]
-        if value != 0:
-            initial_assignment[var] = value
-print(initial_assignment)
-
-sud = CSP(initial_assignment)
-solution_states = sud.Solve()
-
-print(solution_states)
