@@ -2,12 +2,12 @@ import tkinter as tk
 from tkinter import messagebox
 
 
-class SudokuSolver(tk.Frame):  # Inherit from tk.Frame
+class SudokuSolver(tk.Frame):  
     def __init__(self, parent):
-        super().__init__(parent)  # Initialize as a Frame widget
-        self.parent = parent  # Reference to the parent App     
+        super().__init__(parent)  
+        self.parent = parent  
        
-        self.config(bg="#fac8e2")  # Set background color
+        self.config(bg="#fac8e2")  
         self.grid = [[0] * 9 for _ in range(9)]
 
         self.title_label = tk.Label(
@@ -130,7 +130,6 @@ class SudokuSolver(tk.Frame):  # Inherit from tk.Frame
         )
         self.next_button.grid(row=0, column=1, padx=10)
 
-        # Back to Menu Button
         self.back_button = tk.Button(
             self,
             text="← Back to Menu",
@@ -166,10 +165,9 @@ class SudokuSolver(tk.Frame):  # Inherit from tk.Frame
         self.movie_button.config(state=tk.NORMAL)
         self.final_button.config(state=tk.NORMAL)
 
-        self.toggle_board_state("disabled")
+       # self.toggle_board_state("disabled")
 
     def my_fun(self, board_state):
-        # Example: Generate dummy states
         return [board_state, board_state.replace("0", "1"), board_state.replace("0", "2")]
 
 
@@ -196,7 +194,7 @@ class SudokuSolver(tk.Frame):  # Inherit from tk.Frame
         if self.movie_running and self.current_state_index < len(self.states):
             self.update_grid_from_state(self.states[self.current_state_index])
             self.current_state_index += 1
-            self.after(750, self.run_movie)  # Adjust delay (in milliseconds) as needed
+            self.after(750, self.run_movie)  
         else:
             self.movie_running = False
             self.current_state_index = 0
