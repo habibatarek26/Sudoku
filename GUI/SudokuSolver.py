@@ -2,17 +2,16 @@ import tkinter as tk
 from tkinter import messagebox
 
 
-class SudokuSolver:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Sudoku Solver")
-        self.root.geometry("500x600")
-        self.root.config(bg="#fac8e2")
-
+class SudokuSolver(tk.Frame):  # Inherit from tk.Frame
+    def __init__(self, parent):
+        super().__init__(parent)  # Initialize as a Frame widget
+        self.parent = parent  # Reference to the parent App     
+       
+        self.config(bg="#fac8e2")  # Set background color
         self.grid = [[0] * 9 for _ in range(9)]
 
         self.title_label = tk.Label(
-            self.root,
+            self,
             text="Sudoku Solver",
             font=("Water Brush", 45, "bold", "italic"),
             bg="#fac8e2",
@@ -20,7 +19,7 @@ class SudokuSolver:
         )
         self.title_label.pack(pady=20)
 
-        self.grid_frame = tk.Frame(self.root, bg="#000000", bd=3, relief="solid")
+        self.grid_frame = tk.Frame(self, bg="#000000", bd=3, relief="solid")
         self.grid_frame.pack(pady=10)
 
         self.entries = [[None] * 9 for _ in range(9)]
@@ -31,7 +30,7 @@ class SudokuSolver:
                 bottom = 2 if row == 8 else 1
                 right = 2 if col == 8 else 1
 
-                validate_command = (self.root.register(self.validate_input), "%P")
+                validate_command = (self.register(self.validate_input), "%P")
 
                 entry = tk.Entry(
                     self.grid_frame,
@@ -51,7 +50,7 @@ class SudokuSolver:
         self.current_state_index = -1
         self.movie_running = False
 
-        self.button_frame = tk.Frame(self.root, bg="#fac8e2")
+        self.button_frame = tk.Frame(self, bg="#fac8e2")
         self.button_frame.pack(pady=20)
 
         self.solve_button = tk.Button(
@@ -102,7 +101,7 @@ class SudokuSolver:
         )
         self.movie_button.grid(row=1, column=1, padx=10)
 
-        self.slide_frame = tk.Frame(self.root, bg="#fac8e2")
+        self.slide_frame = tk.Frame(self, bg="#fac8e2")
         self.slide_frame.pack(pady=10)
 
         self.prev_button = tk.Button(
@@ -131,22 +130,24 @@ class SudokuSolver:
         )
         self.next_button.grid(row=0, column=1, padx=10)
 
+        # Back to Menu Button
+        self.back_button = tk.Button(
+            self,
+            text="← Back to Menu",
+            command=self.go_back_to_menu,
+            font=("Mali", 16, "italic"),
+            bg="#D99FB4",
+            fg="white",
+            relief="solid",
+            width=15,
+        )
+        self.back_button.pack(pady=20)
+
+
     def validate_input(self, value):
-        """
-        Validates that the input is either empty or a digit between 1 and 9.
-        """
         if value == "" or (value.isdigit() and 1 <= int(value) <= 9):
             return True
         return False
-
-    def toggle_board_state(self, state):
-        """
-        Enable or disable all board entries.
-        :param state: "normal" to enable, "disabled" to disable.
-        """
-        for row in range(9):
-            for col in range(9):
-                self.entries[row][col].config(state=state)
 
     def solve(self):
         self.grid = self.read_grid()
@@ -167,11 +168,14 @@ class SudokuSolver:
 
         self.toggle_board_state("disabled")
 
-#########################################################################################
     def my_fun(self, board_state):
         # Example: Generate dummy states
         return [board_state, board_state.replace("0", "1"), board_state.replace("0", "2")]
-#########################################################################################
+
+
+    def go_back_to_menu(self):
+        self.parent.show_frame("GameModeSelection")
+
 
     def previous_state(self):
         if self.current_state_index > 0:
@@ -192,7 +196,7 @@ class SudokuSolver:
         if self.movie_running and self.current_state_index < len(self.states):
             self.update_grid_from_state(self.states[self.current_state_index])
             self.current_state_index += 1
-            self.root.after(750, self.run_movie)  # Adjust delay (in milliseconds) as needed
+            self.after(750, self.run_movie)  # Adjust delay (in milliseconds) as needed
         else:
             self.movie_running = False
             self.current_state_index = 0
@@ -219,7 +223,6 @@ class SudokuSolver:
                     highlightthickness=1
                 )
 
-
     def clear(self):
         for row in range(9):
             for col in range(9):
@@ -234,7 +237,5 @@ class SudokuSolver:
         self.final_button.config(state=tk.DISABLED)
         self.movie_running = False
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = SudokuSolver(root)
-    root.mainloop()
+    
+
