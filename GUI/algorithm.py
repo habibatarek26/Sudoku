@@ -238,6 +238,7 @@ for row in range(1, 10):
         value = initial_board[row - 1][col - 1]
         if value != 0:
             initial_assignment[var] = value
+print(initial_assignment)
 
 sud = CSP(initial_assignment)
 solution_states = sud.Solve()

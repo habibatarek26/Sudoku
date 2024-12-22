@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-
+from algorithm import CSP
 
 class SudokuSolver(tk.Frame):  
     def __init__(self, parent):
@@ -149,8 +149,14 @@ class SudokuSolver(tk.Frame):
         return False
 
     def solve(self):
+        board_state ={}
         self.grid = self.read_grid()
-        board_state = "".join(str(cell) for row in self.grid for cell in row)
+        for row in range(1, 10):
+            for col in range(1, 10):
+                var = f"V{row}{col}"
+                value =self.grid[row - 1][col - 1]
+                if value != 0:
+                    board_state[var] = value
 
         self.states = self.my_fun(board_state)
         if not self.states:
@@ -165,10 +171,10 @@ class SudokuSolver(tk.Frame):
         self.movie_button.config(state=tk.NORMAL)
         self.final_button.config(state=tk.NORMAL)
 
-       # self.toggle_board_state("disabled")
 
     def my_fun(self, board_state):
-        return [board_state, board_state.replace("0", "1"), board_state.replace("0", "2")]
+        sud = CSP(board_state)
+        return sud.Solve()
 
 
     def go_back_to_menu(self):
