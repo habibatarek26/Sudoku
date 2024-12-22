@@ -139,6 +139,15 @@ class SudokuSolver:
             return True
         return False
 
+    def toggle_board_state(self, state):
+        """
+        Enable or disable all board entries.
+        :param state: "normal" to enable, "disabled" to disable.
+        """
+        for row in range(9):
+            for col in range(9):
+                self.entries[row][col].config(state=state)
+
     def solve(self):
         self.grid = self.read_grid()
         board_state = "".join(str(cell) for row in self.grid for cell in row)
@@ -155,13 +164,14 @@ class SudokuSolver:
         self.next_button.config(state=tk.NORMAL)
         self.movie_button.config(state=tk.NORMAL)
         self.final_button.config(state=tk.NORMAL)
-        
-###################################################################
+
+        self.toggle_board_state("disabled")
+
+#########################################################################################
     def my_fun(self, board_state):
         # Example: Generate dummy states
         return [board_state, board_state.replace("0", "1"), board_state.replace("0", "2")]
-###################################################################
-
+#########################################################################################
 
     def previous_state(self):
         if self.current_state_index > 0:
@@ -197,12 +207,23 @@ class SudokuSolver:
     def update_grid_from_state(self, state):
         for row in range(9):
             for col in range(9):
+                self.entries[row][col].config(state="normal")
                 self.entries[row][col].delete(0, tk.END)
                 self.entries[row][col].insert(0, state[row * 9 + col])
+                self.entries[row][col].config(
+                    state="disabled", 
+                    disabledbackground="#ececec",  # Light gray background
+                    disabledforeground="black",   # Keep text in black
+                    font=("Mali", 18, "italic"),  # Italic font for distinction
+                    highlightbackground="#cccccc",  # Light border color
+                    highlightthickness=1
+                )
+
 
     def clear(self):
         for row in range(9):
             for col in range(9):
+                self.entries[row][col].config(state="normal")
                 self.entries[row][col].delete(0, tk.END)
         self.grid = [[0] * 9 for _ in range(9)]
         self.states = []
@@ -212,7 +233,6 @@ class SudokuSolver:
         self.movie_button.config(state=tk.DISABLED)
         self.final_button.config(state=tk.DISABLED)
         self.movie_running = False
-
 
 if __name__ == "__main__":
     root = tk.Tk()
