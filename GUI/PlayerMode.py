@@ -97,17 +97,14 @@ class PlayerMode(tk.Frame):
         self.process_board_state()
 
     def initialize_random_element(self):
-        """ Initialize one random element with a value between 1 and 9 """
         row = random.randint(0, 8)
         col = random.randint(0, 8)
         self.grid[row][col] = random.randint(1, 9)
 
     def process_board_state(self):
-        """ Process the board by calling myFun and displaying the first state """
         board_state = ''.join(str(cell) for row in self.grid for cell in row)
         self.states = self.my_fun(board_state)
 
-        # Display the first state from the list returned by myFun
         self.update_grid_from_state("010101010010101010010101010010101010010101010010101010010101010010101010010101010")
 
     def update_level(self, level):
@@ -131,7 +128,6 @@ class PlayerMode(tk.Frame):
 
     
     def my_fun(self, board_state):
-        """ Returns a list of possible board states (as strings) """
         return [board_state, board_state.replace("0", "1"), board_state.replace("0", "2")]
 
     def go_back_to_menu(self):
@@ -153,9 +149,9 @@ class PlayerMode(tk.Frame):
                     
                 self.entries[row][col].delete(0, tk.END)
                 if value != 0:
-                    self.entries[row][col].insert(0, str(value))  # Insert the value if not 0
+                    self.entries[row][col].insert(0, str(value))  
                 else:
-                    self.entries[row][col].insert(0, "")  # Insert an empty string for 0
+                    self.entries[row][col].insert(0, "")  
 
                 self.entries[row][col].config(
                     disabledbackground="#ececec",  
@@ -174,3 +170,9 @@ class PlayerMode(tk.Frame):
         self.grid = [[0] * 9 for _ in range(9)]
         self.states = []
         self.current_state_index = -1
+
+
+
+##Easy: 30-40 clues
+##Medium: 25-30 clues
+##Hard: 17-24 clues

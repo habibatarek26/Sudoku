@@ -25,9 +25,7 @@ class App(tk.Tk):
     def show_frame(self, name, *args):
         for frame in self.frames.values():
             frame.pack_forget()
-
         frame = self.frames[name]
-        print(f"Showing frame: {name}")  # Debugging print statement
         if args:  
             frame.update_level(*args)
         frame.pack(fill="both", expand=True)
