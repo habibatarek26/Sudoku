@@ -1,5 +1,23 @@
 import random
 
+
+def filter_states(states):
+    final_state = states[-1]
+
+    valid_states = []
+
+    for state in states:
+        valid = True
+        for i in range(len(state)):
+            if state[i] != '0' and state[i] != final_state[i]:
+                valid = False
+                break
+
+        if valid:
+            valid_states.append(state)
+
+    return valid_states
+
 class CSP:
     def __init__(self, initial_assignment):
         self.initial_assignment = initial_assignment
@@ -78,7 +96,7 @@ class CSP:
             if solution:
                 # Convert solution states to string format
                 self.solution_state = [self.assignment_to_string(state) for state in self.solution_state]
-                return self.solution_state
+                return filter_states(self.solution_state)
             return None
         return None
 
@@ -123,6 +141,7 @@ class CSP:
         saved_domains = {v: self.domains[v].copy() for v in self.variables}
 
         if len(var) == 1:
+
             random.shuffle(self.domains[var[0]])
 
             for value in self.domains[var[0]]:
@@ -132,18 +151,12 @@ class CSP:
                 if not self.is_consistent(var[0], new_assignment):
                     continue
 
-                # Only add to solution_state if it's a final assignment
-                if self.is_final_assignment(var[0], new_assignment):
-                    # Store new state only if it's better than current best
-                    if (self.current_best_solution is None or
-                            len(new_assignment) > len(self.current_best_solution)):
-                        self.current_best_solution = new_assignment.copy()
-                        self.solution_state.append(new_assignment.copy())
-
                 # Reduce domains based on the new assignment
-                self.domains[var[0]] = [value]
+                self.domains[var[0]] = [value]  # Restrict domain to assigned value
 
+                # Apply forward checking by removing the assigned value from neighbors' domains
                 if self.forward_check(var[0], value) and self.ac3():
+                    self.solution_state.append(new_assignment.copy())  # Store intermediate state
                     result = self.backtracking_search(new_assignment)
                     if result:
                         return result
@@ -155,8 +168,6 @@ class CSP:
         else:
             success = True
             new_assignment = assignment.copy()
-            final_assignments = []
-
             for variable in var:
                 value = self.domains[variable][0]
                 new_assignment[variable] = value
@@ -169,20 +180,11 @@ class CSP:
                     success = False
                     break
 
-                if self.is_final_assignment(variable, new_assignment):
-                    final_assignments.append(variable)
-
-            if success:
-                # Add new state if we found any final assignments
-                if final_assignments and (self.current_best_solution is None or
-                                          len(new_assignment) > len(self.current_best_solution)):
-                    self.current_best_solution = new_assignment.copy()
-                    self.solution_state.append(new_assignment.copy())
-
-                if self.ac3():
-                    result = self.backtracking_search(new_assignment)
-                    if result:
-                        return result
+            if success and self.ac3():
+                self.solution_state.append(new_assignment.copy())  # Store intermediate state
+                result = self.backtracking_search(new_assignment)
+                if result:
+                    return result
 
             self.domains = {v: saved_domains[v].copy() for v in self.variables}
 
@@ -197,23 +199,26 @@ class CSP:
         return True
 
     def select_unassigned_variable(self, assignment):
+        # Get all unassigned variables
         unassigned_variables = [var for var in self.variables if var not in assignment]
 
         if not unassigned_variables:
             return None
 
+        # Find variables with domain size 1
         single_domain_vars = [var for var in unassigned_variables if len(self.domains[var]) == 1]
 
         if single_domain_vars:
             return single_domain_vars
 
         min_var = min(unassigned_variables, key=lambda var: len(self.domains[var]))
-        return [min_var]
+        return [min_var]  # Return as list for consistency
 
     def constraints(self, var1, val1, var2, val2):
         if var2 in self.neighbors[var1] and val1 == val2:
             return False
         return True
+
 
 
 # Initial board setup
