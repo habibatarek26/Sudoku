@@ -15,7 +15,6 @@ class Level(tk.Frame):
         )
         self.title_label.pack(pady=50)
 
-        # Easy level button
         self.sudoku_button_easy = tk.Button(
             self, 
             text="Easy",
@@ -28,7 +27,6 @@ class Level(tk.Frame):
         )
         self.sudoku_button_easy.pack(pady=20)
 
-        # Medium level button
         self.sudoku_button_medium = tk.Button(
             self,  
             text="Medium",
@@ -41,7 +39,6 @@ class Level(tk.Frame):
         )
         self.sudoku_button_medium.pack(pady=20)
 
-        # Hard level button
         self.sudoku_button_hard = tk.Button(
             self, 
             text="Hard",

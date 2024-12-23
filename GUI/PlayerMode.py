@@ -10,10 +10,9 @@ class PlayerMode(tk.Frame):
         self.parent = parent  
         self.level = level 
         self.config(bg="#fac8e2") 
-        self.grid = [[0] * 9 for _ in range(9)]  # Initialize all elements to 0
+        self.grid = [[0] * 9 for _ in range(9)]
         self.final_state = None
 
-        # Initialize one random element
 
         self.title_label = tk.Label(
             self,
@@ -115,7 +114,6 @@ class PlayerMode(tk.Frame):
         board_state = {}
         self.grid = self.read_grid()
 
-        # Prepare the initial state from the current grid
         for row in range(1, 10):
             for col in range(1, 10):
                 var = f"V{row}{col}"
@@ -232,7 +230,7 @@ class PlayerMode(tk.Frame):
     def clear(self):
         for row in range(9):
             for col in range(9):
-             if not self.entries[row][col].cget("state") == "disabled":  # Only clear disabled entries
+             if not self.entries[row][col].cget("state") == "disabled":
                 self.entries[row][col].config(state="normal")
                 self.entries[row][col].delete(0, tk.END)
         self.grid = [[0] * 9 for _ in range(9)]

@@ -24,13 +24,11 @@ class CSP:
         self.initial_assignment = initial_assignment
         self.assignment = initial_assignment
         self.variables = [f"V{row}{col}" for row in range(1, 10) for col in range(1, 10)]
-        self.solution_state = []  # List to store final states
-        self.current_best_solution = None  # Track the best solution found so far
+        self.solution_state = []
+        self.current_best_solution = None
 
-        # Add initial state
         self.solution_state.append(initial_assignment.copy())
 
-        # Initialize domains based on initial assignment
         self.domains = {}
         for var in self.variables:
             if var in initial_assignment:
@@ -38,19 +36,15 @@ class CSP:
             else:
                 self.domains[var] = list(range(1, 10))
 
-        # Initialize neighbors
         self.neighbors = {}
         for var in self.variables:
             row = int(var[1])
             col = int(var[2])
 
-            # Row neighbors
             row_neighbors = [f"V{row}{c}" for c in range(1, 10) if c != col]
 
-            # Column neighbors
             col_neighbors = [f"V{r}{col}" for r in range(1, 10) if r != row]
 
-            # Subgrid neighbors
             subgrid_row_start = 3 * ((row - 1) // 3) + 1
             subgrid_col_start = 3 * ((col - 1) // 3) + 1
             subgrid_neighbors = [
@@ -63,16 +57,12 @@ class CSP:
             self.neighbors[var] = list(set(row_neighbors + col_neighbors + subgrid_neighbors))
 
     def is_final_assignment(self, var, assignment):
-        """Check if an assignment is final (won't need to be changed)"""
-        # Check if the assignment is consistent
         if not self.is_consistent(var, assignment):
             return False
 
-        # Check if it's the only possible value in the domain
         if len(self.domains[var]) == 1:
             return True
 
-        # Check if it's the only value that works with neighbors
         valid_values = 0
         for value in self.domains[var]:
             temp_assignment = assignment.copy()
@@ -97,7 +87,6 @@ class CSP:
             solution = self.backtracking_search(self.initial_assignment)
             print(f"Time taken: {time.time() - start_time:.2f} seconds")
             if solution:
-                # Convert solution states to string format
                 self.solution_state = [self.assignment_to_string(state) for state in self.solution_state]
                 return filter_states(self.solution_state)
             return None
@@ -144,7 +133,6 @@ class CSP:
 
         var = self.select_unassigned_variable(assignment)
 
-        # Save domains state before assignment
         saved_domains = {v: self.domains[v].copy() for v in self.variables}
 
         if len(var) == 1:
@@ -158,12 +146,10 @@ class CSP:
                 if not self.is_consistent(var[0], new_assignment):
                     continue
 
-                # Reduce domains based on the new assignment
-                self.domains[var[0]] = [value]  # Restrict domain to assigned value
+                self.domains[var[0]] = [value]
 
-                # Apply forward checking by removing the assigned value from neighbors' domains
                 if self.forward_check(var[0], value) and self.ac3():
-                    self.solution_state.append(new_assignment.copy())  # Store intermediate state
+                    self.solution_state.append(new_assignment.copy())
                     result = self.backtracking_search(new_assignment)
                     if result:
                         return result
@@ -188,7 +174,7 @@ class CSP:
                     break
 
             if success and self.ac3():
-                self.solution_state.append(new_assignment.copy())  # Store intermediate state
+                self.solution_state.append(new_assignment.copy())
                 result = self.backtracking_search(new_assignment)
                 if result:
                     return result
@@ -206,20 +192,18 @@ class CSP:
         return True
 
     def select_unassigned_variable(self, assignment):
-        # Get all unassigned variables
         unassigned_variables = [var for var in self.variables if var not in assignment]
 
         if not unassigned_variables:
             return None
 
-        # Find variables with domain size 1
         single_domain_vars = [var for var in unassigned_variables if len(self.domains[var]) == 1]
 
         if single_domain_vars:
             return single_domain_vars
 
         min_var = min(unassigned_variables, key=lambda var: len(self.domains[var]))
-        return [min_var]  # Return as list for consistency
+        return [min_var]
 
     def constraints(self, var1, val1, var2, val2):
         if var2 in self.neighbors[var1] and val1 == val2:

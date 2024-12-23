@@ -223,10 +223,10 @@ class SudokuSolver(tk.Frame):
                 self.entries[row][col].insert(0, state[row * 9 + col])
                 self.entries[row][col].config(
                     state="disabled", 
-                    disabledbackground="#ececec",  # Light gray background
-                    disabledforeground="black",   # Keep text in black
-                    font=("Mali", 18, "italic"),  # Italic font for distinction
-                    highlightbackground="#cccccc",  # Light border color
+                    disabledbackground="#ececec",
+                    disabledforeground="black",
+                    font=("Mali", 18, "italic"),
+                    highlightbackground="#cccccc",
                     highlightthickness=1
                 )
 
