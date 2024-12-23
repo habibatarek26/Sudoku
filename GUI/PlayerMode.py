@@ -130,6 +130,7 @@ class PlayerMode(tk.Frame):
             return
 
         self.final_state = self.states[-1] 
+        print("final state: ", self.final_state)
 
         if self.level == "Hard":
             clues = 23 
@@ -170,7 +171,7 @@ class PlayerMode(tk.Frame):
                 self.update_grid_from_state(board_state)
         else:
             if self.getCheckOfone(board_state):
-                messagebox.showinfo("good play ", "this good play")
+                messagebox.showinfo("WOW!! ", "Correct! Keep going!")
                 self.update_grid_from_state(board_state)
             else:
                 messagebox.showinfo("Puzzle Solving Failed", "Oops! Try a different Solution")
