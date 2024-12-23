@@ -1,4 +1,5 @@
 import random
+import time
 
 
 def filter_states(states):
@@ -91,8 +92,10 @@ class CSP:
         return ''.join(''.join(str(cell) for cell in row) for row in board)
 
     def Solve(self):
+        start_time = time.time()
         if self.ac3():
             solution = self.backtracking_search(self.initial_assignment)
+            print(f"Time taken: {time.time() - start_time:.2f} seconds")
             if solution:
                 # Convert solution states to string format
                 self.solution_state = [self.assignment_to_string(state) for state in self.solution_state]
