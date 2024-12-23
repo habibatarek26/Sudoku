@@ -11,6 +11,7 @@ class PlayerMode(tk.Frame):
         self.level = level 
         self.config(bg="#fac8e2") 
         self.grid = [[0] * 9 for _ in range(9)]  # Initialize all elements to 0
+        self.final_state = None
 
         # Initialize one random element
 
@@ -96,16 +97,25 @@ class PlayerMode(tk.Frame):
         self.back_button.pack(pady=20)
         
 
-    def initialize_random_element(self):
-        row = random.randint(0, 8)
-        col = random.randint(0, 8)
-        self.grid[row][col] = random.randint(1, 9)
+    def initialize_random_board(self, num_to_clear):
+
+        s = list(self.final_state) 
+        cells = [(row, col) for row in range(9) for col in range(9)]
+        random.shuffle(cells)
+
+        for _ in range(num_to_clear):
+            row, col = cells.pop()
+            index = row * 9 + col  
+            s[index] = '0' 
+
+        return ''.join(s)
+
 
     def process_board_state(self):
         board_state = {}
         self.grid = self.read_grid()
-        self.initialize_random_element()
 
+        # Prepare the initial state from the current grid
         for row in range(1, 10):
             for col in range(1, 10):
                 var = f"V{row}{col}"
@@ -114,22 +124,25 @@ class PlayerMode(tk.Frame):
                     board_state[var] = value
 
         self.states = self.my_fun(board_state)
-        
-        # Ensure self.states is not None before proceeding
+
         if self.states is None:
             messagebox.showinfo("Error", "No valid solution found!")
             return
 
-        # Proceed with state-based logic depending on the level
+        self.final_state = self.states[-1] 
+
         if self.level == "Hard":
-            num = 20 if len(self.states) - 1 >= 70 else math.floor(len(self.states) * 1 / 2)
-            self.update_grid_from_state(self.states[num])
+            clues = 23 
         elif self.level == "Easy":
-            num = 40 if len(self.states) - 1 >= 70 else math.floor(len(self.states) * 3 / 4)
-            self.update_grid_from_state(self.states[num])
+            clues = 40  
         else:
-            num = 30 if len(self.states) - 1 >= 70 else math.floor(len(self.states) * 2 / 3)
-            self.update_grid_from_state(self.states[num])
+            clues = 30 
+     
+
+        s = self.initialize_random_board(81 - clues )  
+        self.update_grid_from_state(s)
+
+         
 
 
     def update_level(self, level):
