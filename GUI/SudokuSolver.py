@@ -207,6 +207,8 @@ class SudokuSolver(tk.Frame):
             self.current_state_index = 0
 
     def show_final_result(self):
+        self.current_state_index = 0
+        self.movie_running = False
         if self.states:
             self.update_grid_from_state(self.states[-1])
 
