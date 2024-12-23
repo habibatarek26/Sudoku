@@ -125,7 +125,11 @@ class CSP:
         revised = False
         for x in set(self.domains[xi]):
             if not any(self.constraints(xi, x, xj, y) for y in self.domains[xj]):
+                print(f"this is i = {xi}, this is j = {xj}")
+                print(f"for {xi} this is domain {self.domains[xi]}")
+                print(f"for {xj} this is domain {self.domains[xj]}")
                 self.domains[xi].remove(x)
+                print(f"for {xi} this is domain after Removal of {x} : {self.domains[xi]}")
                 revised = True
         return revised
 
