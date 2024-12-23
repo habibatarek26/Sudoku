@@ -159,15 +159,37 @@ class PlayerMode(tk.Frame):
         self.grid = self.read_grid()
         board_state = string = ''.join(str(item) for row in self.grid for item in row)
 
-        if(not self.states):
-            messagebox.showinfo("Puzzle Solving Failed", "Oops! Try a different Solution")
-        elif not (board_state == self.states[-1]):
-            messagebox.showinfo("Puzzle Solving Failed", "Oops! Try a different Solution")
-            return
+        if self.allSolved(board_state):
+            if(not self.states):
+                messagebox.showinfo("Puzzle Solving Failed", "Oops! Try a different Solution")
+            elif not (board_state == self.states[-1]):
+                messagebox.showinfo("Puzzle Solving Failed", "Oops! Try a different Solution")
+                return
+            else:
+                messagebox.showinfo("Congratulations !!", "Congratulations")
+                self.update_grid_from_state(board_state)
         else:
-            messagebox.showinfo("Congratulations !!", "Congratulations")
+            if self.getCheckOfone(board_state):
+                messagebox.showinfo("good play ", "this good play")
+                self.update_grid_from_state(board_state)
+            else:
+                messagebox.showinfo("Puzzle Solving Failed", "Oops! Try a different Solution")
+    def getCheckOfone(self , board_state):
+        for i in range(81):
+            if board_state[i] == '0':
+                continue
+            if board_state[i] != self.states[-1][i]:
+                return False
 
-    
+        return True
+
+    def allSolved(self , board_state):
+        for i in range(81):
+            if board_state[i] == '0':
+                return False
+        return True
+
+
     def my_fun(self, board_state):
         sud = CSP(board_state)
         return sud.Solve()
